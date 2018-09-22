@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+//Retrieve pairs of numbers from two arrays which satisfies a given sum
 func findPair(arr1 []int, arr2 []int, n int) [][]int {
 	hm := make(map[int]int)
 	output := [][]int{}
@@ -11,7 +12,6 @@ func findPair(arr1 []int, arr2 []int, n int) [][]int {
 	for _, val := range arr1 {
 		hm[val] = hm[val] + 1
 	}
-	fmt.Print(hm)
 
 	for _, val := range arr2 {
 		temp := n - val

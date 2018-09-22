@@ -4,11 +4,13 @@ import (
 	"fmt"
 )
 
+//Node contains value and pointer to next node
 type node struct {
 	val      int
 	nextNode *node
 }
 
+//Deletes node given by pointer
 func delete(ptr *node) {
 	ptrNext := ptr.nextNode
 	ptr.val = ptrNext.val
@@ -26,8 +28,7 @@ func main() {
 
 	delete(fourthNode)
 
-	for ii := firstNode; ii != nil; ii = ii.nextNode{
+	for ii := firstNode; ii != nil; ii = ii.nextNode {
 		fmt.Println(ii)
-	} 
-
+	}
 }

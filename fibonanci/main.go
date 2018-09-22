@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+//Closure returns a fibonanci function
 func evenFib() func() float64 {
 	x := float64(0)
 	y := float64(1)

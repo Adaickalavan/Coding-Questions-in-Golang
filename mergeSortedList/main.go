@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-//Recursively merge two ordered list
+//Recursively merge two sorted lists
 func arrange(arr1 []int, arr2 []int, output *[]int) {
 	switch {
 	case len(arr1) == 0 && len(arr2) == 0:
