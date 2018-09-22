@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-//Point represents data
+//Point represent the multidimensional data
 type Point []float64
 
 //Distance returns distance between 'other' and 'point'
@@ -19,6 +19,7 @@ func (point Point) Distance(other Point) float64 {
 
 func main() {
 
+	//Set of data points
 	points := []Point{
 		Point{3, 3},
 		Point{2, 3},
@@ -32,6 +33,7 @@ func main() {
 		Point{-2, -2},
 	}
 
+	//Initialize centroids to some of the existing data points
 	centroids := []Point{
 		Point{2, 2},
 		Point{1, 1},
@@ -39,13 +41,18 @@ func main() {
 		Point{-2, -2},
 	}
 
-	centroids = kmeans(points, centroids, 10, 1)
+	//Cell the kmeans algorithm
+	maxIter := 10
+	eta := 0.4
+	centroids = kmeans(points, centroids, maxIter, eta)
 
+	//Print new centroids
 	fmt.Println(centroids)
+	//Print map of centroids and corresponding points
 	fmt.Println(classify(points, centroids))
-
 }
 
+//Recursive kmeans algorithm
 func kmeans(points []Point, centroids []Point, maxIter int, eta float64) []Point {
 	centroidsMap := classify(points, centroids)
 	updatedCentroids := updateCentroids(centroids, centroidsMap)
@@ -56,6 +63,7 @@ func kmeans(points []Point, centroids []Point, maxIter int, eta float64) []Point
 	}
 }
 
+//Check whether centroids have converged to within eta
 func converged(centroids []Point, updatedCentroids []Point, eta float64) bool {
 	ch := make(chan bool, len(centroids))
 	for ii := range centroids {
@@ -83,6 +91,7 @@ type Result struct {
 	distance    float64
 }
 
+//Classify the data points to their nearest centroids
 func classify(points []Point, centroids []Point) map[int][]Point {
 
 	ch := make(chan Result)
@@ -106,6 +115,7 @@ func classify(points []Point, centroids []Point) map[int][]Point {
 	return centroidsMap
 }
 
+//Find the closest centroid for a given data point
 func findClosest(p Point, centroids []Point) int {
 	ch := make(chan Result)
 
@@ -134,6 +144,7 @@ func findClosest(p Point, centroids []Point) int {
 
 }
 
+//Compute new centroids by averaging data points corresponding to each centroid
 func updateCentroids(oldCentroids []Point, centroidsMap map[int][]Point) []Point {
 
 	ch := make(chan Result)
@@ -162,6 +173,7 @@ func updateCentroids(oldCentroids []Point, centroidsMap map[int][]Point) []Point
 	return newCentroids
 }
 
+//Compute average point for a given list of points
 func averager(points []Point) Point {
 	newPoint := make(Point, len(points[0]))
 	for _, point := range points {
