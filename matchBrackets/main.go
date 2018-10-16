@@ -13,12 +13,14 @@ func main() {
 	}
 }
 
+//Map closing brackets to corresponding opening brackets
 var bracketMap = map[rune]rune{
 	rune(')'): rune('('),
 	rune('}'): rune('{'),
 	rune(']'): rune('['),
 }
 
+//Recursively compare brackets in a string
 func matchBrackets(stack *[]rune, input []rune) bool {
 	switch {
 	case len(*stack) == 0 && len(input) == 0:
