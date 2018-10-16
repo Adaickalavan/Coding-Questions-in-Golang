@@ -9,7 +9,7 @@ func main() {
 	for _, str := range strList {
 		input := []rune(str)
 		valid := matchBrackets(&[]rune{}, input)
-		fmt.Println("The string", str, " is", valid)
+		fmt.Println("The string", str, "is", valid)
 	}
 }
 
