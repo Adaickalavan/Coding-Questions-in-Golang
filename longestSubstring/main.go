@@ -8,28 +8,33 @@ import (
 func longestSubstr(arr []rune) (int, int) {
 	start := 0
 	end := 0
-	stack := []int{}
+	longestStart := 0
+	longestEnd := 0
+	stack := []int{-1}
 
-	if arr == nil {
-		return start, end
+	if len(arr) <= 1 {
+		return longestStart, longestEnd
 	}
 
 	for ii, val := range arr {
 		switch val {
-		case '(':
+		case rune('('):
 			stack = append(stack, ii)
 		default: //case ')':
+			stack = stack[:len(stack)-1] //pop opening bracket
 			if len(stack) != 0 {
-				end = ii
-				stack = stack[:len(stack)-1] //pop opening bracket
-			} else {
 				start = stack[len(stack)-1]
+				end = ii
+				if end-start > longestEnd-longestStart {
+					longestStart = start
+					longestEnd = end
+				}
+			} else { //empty stack
+				stack = append(stack, ii)
 			}
-
 		}
-
 	}
-
+	return longestStart + 1, longestEnd
 }
 
 func main() {
@@ -37,6 +42,6 @@ func main() {
 	for _, str := range strList {
 		input := []rune(str)
 		start, end := longestSubstr(input)
-		fmt.Println("The string", str, "is", string(input[start:end]))
+		fmt.Println("Longest valid substring of", str, "is", string(input[start:end+1]), ", from ", start, "to ", end)
 	}
 }
