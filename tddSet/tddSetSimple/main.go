@@ -6,7 +6,6 @@ import (
 
 func main() {
 
-	fmt.Println("Hi")
 	s := NewSet()
 	s.Add(1)
 	s.Add(2)
