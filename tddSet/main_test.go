@@ -22,3 +22,23 @@ func TestNewSet(t *testing.T) {
 		})
 	}
 }
+
+func TestSet_Add(t *testing.T) {
+	type args struct {
+		key interface{}
+	}
+	tests := []struct {
+		name string
+		s    *Set
+		args args
+	}{
+		{name: "Initialize new Set",
+			want: &Set{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.s.Add(tt.args.key)
+		})
+	}
+}
