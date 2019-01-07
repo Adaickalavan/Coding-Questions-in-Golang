@@ -101,7 +101,7 @@ func TestSet_Contains(t *testing.T) {
 			want: true,
 		},
 		{name: "Check for a non-existing element in Set",
-			s:    &Set{},
+			s:    &Set{2: struct{}{}},
 			args: args{key: 1},
 			want: false,
 		},
@@ -115,3 +115,54 @@ func TestSet_Contains(t *testing.T) {
 	}
 }
 
+func TestSet_Union(t *testing.T) {
+	type args struct {
+		other *Set
+	}
+	tests := []struct {
+		name string
+		s    *Set
+		args args
+		want *Set
+	}{
+		{name: "Union of two sets",
+			s:    &Set{1: struct{}{}},
+			args: args{other: &Set{3: struct{}{}}},
+			want: &Set{1: struct{}{}, 3: struct{}{}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.s.Union(tt.args.other)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Set.Union() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestSet_Intersection(t *testing.T) {
+	type args struct {
+		other *Set
+	}
+	tests := []struct {
+		name string
+		s    *Set
+		args args
+		want *Set
+	}{
+		{name: "Intersection of two sets",
+			s:    &Set{1: struct{}{}, 3: struct{}{}},
+			args: args{other: &Set{3: struct{}{}}},
+			want: &Set{3: struct{}{}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.s.Intersection(tt.args.other)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Set.Intersection() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

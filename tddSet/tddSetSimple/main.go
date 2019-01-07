@@ -50,8 +50,25 @@ func (s *Set) Contains(key interface{}) bool {
 	return ok
 }
 
-//Contains checks whether a key exists in set
-func (s *Set) Union(key interface{}) bool {
-	_, ok := (*s)[key]
-	return ok
+//Union joins two sets
+func (s *Set) Union(other *Set) *Set {
+	newSet := NewSet()
+	for key := range *s {
+		(*newSet)[key] = struct{}{}
+	}
+	for key := range *other {
+		(*newSet)[key] = struct{}{}
+	}
+	return newSet
+}
+
+//Intersection returns intersection between two sets
+func (s *Set) Intersection(other *Set) *Set {
+	newSet := NewSet()
+	for key := range *s {
+		if _, ok := (*other)[key]; ok {
+			(*newSet)[key] = struct{}{}
+		}
+	}
+	return newSet
 }
