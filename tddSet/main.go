@@ -8,9 +8,13 @@ func main() {
 
 	fmt.Println("Hi")
 	s := NewSet()
-	s.Add("Hi")
+	s.Add(1)
+	s.Add(2)
+	s.Add(3)
+	s.Remove(1)
+	fmt.Println(s.Contains(1))
+	fmt.Println(s.Contains(2))
 	s.Print()
-
 }
 
 //Set implements the set
@@ -24,8 +28,9 @@ func NewSet() *Set {
 
 //Print prints the keys within the set
 func (s *Set) Print() {
+	fmt.Print("Contents of Set: ")
 	for key := range *s {
-		fmt.Println("--", key)
+		fmt.Print(key, ", ")
 	}
 }
 
@@ -34,7 +39,7 @@ func (s *Set) Add(key interface{}) {
 	(*s)[key] = struct{}{}
 }
 
-//Remove removes key from set
+//Remove removes key from the set
 func (s *Set) Remove(key interface{}) {
 	delete((*s), key)
 }
@@ -44,3 +49,4 @@ func (s *Set) Contains(key interface{}) bool {
 	_, ok := (*s)[key]
 	return ok
 }
+

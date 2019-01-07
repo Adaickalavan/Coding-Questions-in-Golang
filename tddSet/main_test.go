@@ -31,14 +31,87 @@ func TestSet_Add(t *testing.T) {
 		name string
 		s    *Set
 		args args
+		want *Set
 	}{
-		{name: "Initialize new Set",
-			want: &Set{},
+		{name: "Add new element into Set",
+			s:    &Set{},
+			args: args{key: 1},
+			want: &Set{1: struct{}{}},
+		},
+		{name: "Add existing element into Set",
+			s:    &Set{1: struct{}{}},
+			args: args{key: 1},
+			want: &Set{1: struct{}{}},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tt.s.Add(tt.args.key)
+			if !reflect.DeepEqual(tt.s, tt.want) {
+				t.Errorf("Set.Add() = %v, want %v", tt.s, tt.want)
+			}
 		})
 	}
 }
+
+func TestSet_Remove(t *testing.T) {
+	type args struct {
+		key interface{}
+	}
+	tests := []struct {
+		name string
+		s    *Set
+		args args
+		want *Set
+	}{
+		{name: "Remove an element from Set",
+			s:    &Set{1: struct{}{}},
+			args: args{key: 1},
+			want: &Set{},
+		},
+		{name: "Remove an element from empty Set",
+			s:    &Set{},
+			args: args{key: 1},
+			want: &Set{},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.s.Remove(tt.args.key)
+			if !reflect.DeepEqual(tt.s, tt.want) {
+				t.Errorf("Set.Remove() = %v, want %v", tt.s, tt.want)
+			}
+		})
+	}
+}
+
+func TestSet_Contains(t *testing.T) {
+	type args struct {
+		key interface{}
+	}
+	tests := []struct {
+		name string
+		s    *Set
+		args args
+		want bool
+	}{
+		{name: "Check for an existing element in Set",
+			s:    &Set{1: struct{}{}},
+			args: args{key: 1},
+			want: true,
+		},
+		{name: "Check for a non-existing element in Set",
+			s:    &Set{},
+			args: args{key: 1},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.s.Contains(tt.args.key); got != tt.want {
+				t.Errorf("Set.Contains() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
