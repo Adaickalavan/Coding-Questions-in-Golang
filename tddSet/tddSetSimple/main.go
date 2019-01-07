@@ -50,3 +50,8 @@ func (s *Set) Contains(key interface{}) bool {
 	return ok
 }
 
+//Contains checks whether a key exists in set
+func (s *Set) Union(key interface{}) bool {
+	_, ok := (*s)[key]
+	return ok
+}
