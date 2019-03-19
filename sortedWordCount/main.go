@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -16,9 +18,10 @@ func (words byCount) Swap(i int, j int) {
 	words[i], words[j] = words[j], words[i]
 }
 
+// Less sorts words by count, in descending order followed by alphabetical order
 func (words byCount) Less(i int, j int) bool {
 	switch {
-	case words[i].count < words[j].count:
+	case words[i].count > words[j].count:
 		return true
 	case words[i].count == words[j].count && words[i].word < words[j].word:
 		return true
@@ -46,17 +49,38 @@ func sorter(words []string) {
 
 	sort.Sort(byCount(list))
 
-	fmt.Println(list)
+	// Print the word count
+	for _, elem := range list {
+		fmt.Println(elem.word, elem.count)
+	}
 
 }
 
-func main() {
-
-	str := "zxgh zxgh abcdefgh hi jUOn  ABC abc DEF def DEf ki hi"
+func clean(str string) []string {
 
 	// Convert letters to lowercase and split string into words
 	words := strings.Fields(strings.ToLower(str))
-	// Sort string
-	sorter(words)
 
+	// Remove all non letter characters
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for ii, elem := range words {
+		words[ii] = reg.ReplaceAllString(elem, "")
+	}
+
+	return words
+}
+
+func main() {
+	// Example string
+	str := `The quick brown fox jumped over the lazy dog's bowl.
+	The dog was angry with the fox for considering him lazy.`
+
+	// Clean up the string
+	words := clean(str)
+
+	// Sort the words
+	sorter(words)
 }
