@@ -49,8 +49,8 @@ func sorter(words []string) {
 
 	sort.Sort(byCount(list))
 
-	// Print the word count
-	for _, elem := range list {
+	// Print the 10 frequent words
+	for _, elem := range list[:10] {
 		fmt.Println(elem.word, elem.count)
 	}
 
